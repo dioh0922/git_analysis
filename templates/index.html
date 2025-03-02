@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="mx-2 my-2">
+
+  <div id="loading" style="display: none;">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-grow" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="form-container">
+    <form id="myForm" action="/request" method="post" enctype="multipart/form-data">
+    </form>
+  </div> 
+
+</div>
+
+<script>
+  // フォームが送信される前にフォームを非表示にしてローディングインジケーターを表示
+  document.getElementById('myForm').addEventListener('submit', function(event) {
+      // フォームを非表示
+      document.getElementById('form-container').style.display = 'none';
+      
+      // ローディングインジケーターを表示
+      document.getElementById('loading').style.display = 'block';
+  });
+</script>
+{% endblock %}
