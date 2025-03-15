@@ -33,8 +33,13 @@ export const GET = async() => {
         },
       }
     );
-    console.log(response.data)
-    return new Response(JSON.stringify(response.data), { status: 200 });
+    const user = response.data.data.user;
+    const contributionsCollection = user.contributionsCollection
+    const week = user.contributionsCollection.contributionCalendar.weeks;
+    const flat = week.flatMap((item: any) => item.contributionDays);
+    const graph = [['date', 'count'], ...flat.map((item: any) => {return [item.date, item.contributionCount]})];
+    console.log(graph)
+    return new Response(JSON.stringify(graph), { status: 200 });
   } catch (error) {
     // エラーが発生した場合でも必ずレスポンスを返す
     console.log(error)

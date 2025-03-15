@@ -1,6 +1,19 @@
 "use client"; 
 import { useEffect, useState } from 'react';
-import axios from "axios";
+import { Chart } from "react-google-charts"
+
+// グラフのオプション
+const options = {
+  title: 'Git Contribution',
+  curveType: 'function', // 折れ線グラフの曲線を滑らかにするオプション
+  legend: { position: 'bottom' },
+  hAxis: {
+    title: 'Month',
+  },
+  vAxis: {
+    title: 'Sales',
+  },
+};
 
 const Home = () => {
   const [contributions, setContributions] = useState<any[]>([]);
@@ -11,8 +24,10 @@ const Home = () => {
       try {
         const res = await fetch('/api/github');
         if (res.ok) {
+          const json = await res.json();
+          console.log(json)
           setInit(true);
-          setContributions([]);
+          setContributions(json);
         } else {
           setError('Failed to fetch data');
         }
@@ -29,7 +44,18 @@ const Home = () => {
   return (
     <div>
       <h1>GitHub Contributions</h1>
-      <h2> {init && <p>初期状態</p>}</h2>
+      {
+        init ? (
+        <Chart
+          chartType="Line"
+          data={contributions}
+          options={options}       // オプションを渡す
+          width="100%"            // グラフの幅
+          height="400px"          // グラフの高さ
+        />
+        ) 
+        : (<h2>読み込み中</h2>)
+      }
     </div>
   );
 }
