@@ -6,12 +6,11 @@ import { Chart } from "react-google-charts"
 const options = {
   title: 'Git Contribution',
   curveType: 'function', // 折れ線グラフの曲線を滑らかにするオプション
-  legend: { position: 'bottom' },
   hAxis: {
     title: 'Month',
   },
   vAxis: {
-    title: 'Sales',
+    title: '行数',
   },
 };
 
@@ -47,7 +46,7 @@ const Home = () => {
       {
         init ? (
         <Chart
-          chartType="Line"
+          chartType="ColumnChart"
           data={contributions}
           options={options}       // オプションを渡す
           width="100%"            // グラフの幅
