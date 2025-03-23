@@ -1,16 +1,16 @@
 "use client"; 
 import { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts"
+import Range from "./component/range";
 
 // グラフのオプション
 const options = {
   title: 'Git Contribution',
-  curveType: 'function', // 折れ線グラフの曲線を滑らかにするオプション
   hAxis: {
-    title: 'Month',
+    title: 'Date',
   },
   vAxis: {
-    title: '行数',
+    title: 'Count',
   },
 };
 
@@ -43,6 +43,7 @@ const Home = () => {
   return (
     <div>
       <h1>GitHub Contributions</h1>
+      <Range load={setContributions}/>
       {
         init ? (
         <Chart
