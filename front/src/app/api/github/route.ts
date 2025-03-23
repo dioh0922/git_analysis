@@ -1,14 +1,14 @@
 
 import axios from "axios";
 
-export const GET = async() => {
+const createUserQuery = (from?: string | null, to?:string | null) => {
   const gitUser = process.env.GIT_USER;
-  const gitToken = process.env.GIT_TOKEN;
-  try {
-    const query = `
+  const fromParam = from ? `"${from}"` : null
+  const toParam = to ? `"${to}"` : null
+  return `
       query {
         user(login: "${gitUser}") {
-          contributionsCollection {
+          contributionsCollection(from: ${fromParam}, to:${toParam}) {
             contributionCalendar {
               weeks {
                 contributionDays {
@@ -21,6 +21,15 @@ export const GET = async() => {
         }
       }
     `;
+}
+
+export const GET = async(req: Request) => {
+  const url = new URL(req.url);
+  const from = url.searchParams.get('from'); 
+  const to = url.searchParams.get('to'); 
+  const gitToken = process.env.GIT_TOKEN;
+  try {
+    const query = createUserQuery(from, to);
 
     const response = await axios.post<any>(
       'https://api.github.com/graphql',
