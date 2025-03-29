@@ -10,10 +10,17 @@ const Range = (props: any) => {
   const onChangeTo = (e: any) => {
     setTo(e.target.value);
   }
+
+  const convertUTCString = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)).toISOString();
+  }
+
   const onClick = async () => {
+
     const params = new URLSearchParams({
-      from: from,
-      to: to,
+      from: convertUTCString(from),
+      to: convertUTCString(to),
     });
     try {
       const res = await fetch('/api/github?' + params.toString());
